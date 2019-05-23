@@ -1,3 +1,8 @@
+/* card の画像を保持するリスト
+     0: down
+    -1: joker
+*/
+
 var img_card = new Array(4);
 for(var i = 0; i <= 3; i++){
     img_card[i] = new Image();
@@ -10,12 +15,20 @@ img_card[0].src = "image/card.png";
 img_card.push(new Image());
 img_card[img_card.length - 1].src = "image/joker.png";
 
+/* card の数字を保持するリスト
+    ex)
+    index 0, 4: 1
+    index 1, 5: 2
+    シャッフルした後、unshift するので
+    index 0: 0
+*/
 var card = new Array(8);
 for (var i = 0; i < card.length / 2; i++){
     card[i] = i + 1;
     card[i + 4] = i + 1;
 }
 
+// 数字を保持するリストをランダムにする
 for (var i = 0; i < card.length; i++){
     var random = Math.floor(Math.random() * 11) % 8;
     var tmp = card[i];
@@ -24,7 +37,7 @@ for (var i = 0; i < card.length; i++){
 }
 
 card.unshift(0);
-document.write(card)
+document.write(card);
 
 /*
 card state
@@ -37,6 +50,7 @@ state_card.fill(0);
 
 var first_card = 0;
 var second_card = 0;
+
 function select_card(n){
     if (first_card === 0 && state_card[n] === 0){
         first_card = n;
@@ -60,18 +74,21 @@ function check_pair(){
     } else if(card[first_card] === card[second_card]){
         state_card[first_card] = 2;
         state_card[second_card] = 2;
-        document.getElementById("gazo" + first_card).src = img_card[img_card.length - 1].src;
-        document.getElementById("gazo" + second_card).src = img_card[img_card.length - 1].src;        
+        setTimeout(function() {
+            document.getElementById("gazo" + first_card).src = img_card[img_card.length - 1].src;
+            document.getElementById("gazo" + second_card).src = img_card[img_card.length - 1].src;        
+            first_card = 0;
+            second_card = 0;
+          }, 1000);
+       
     } else {
-
         state_card[first_card] = 0;
         state_card[second_card] = 0;
-        document.getElementById("gazo" + first_card).src = img_card[0].src;
-        document.getElementById("gazo" + second_card).src = img_card[0].src;
+        setTimeout(function() {
+            document.getElementById("gazo" + first_card).src = img_card[0].src;
+            document.getElementById("gazo" + second_card).src = img_card[0].src;
+            first_card = 0;
+            second_card = 0;    
+          }, 1000);
     }
-    first_card = 0;
-    second_card = 0;    
 }
-
-
-
